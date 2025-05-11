@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>DATHIUN AI Bracelet Generator</title>
-  <style>
+<meta charset="utf-8"/>
+<title>DATHIUN AI Bracelet Generator</title>
+<style>
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -79,18 +80,16 @@
   </style>
 </head>
 <body>
-  <div class="main">
-    <div class="selection-bar" id="selectionBar"></div>
-    <div class="controls">
-      <button onclick="generateBraceletFromSelection()">ولّد التصميم الذكي</button>
-      <button onclick="resetBracelet()">إعادة التصميم</button>
-    </div>
-    <div class="bracelet-container" id="bracelet"></div>
-  </div>
-
-  <div class="sidebar" id="stonePanel"></div>
-
-  <script>
+<div class="main">
+<div class="selection-bar" id="selectionBar"></div>
+<div class="controls">
+<button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
+<button onclick="resetBracelet()">إعادة التصميم</button>
+</div>
+<div class="bracelet-container" id="bracelet"></div>
+</div>
+<div class="sidebar" id="stonePanel"></div>
+<script>
     const stoneImages = [
       'https://i.imgur.com/doUTIAd.png','https://i.imgur.com/rjRfPu8.png','https://i.imgur.com/rK01MAV.png',
       'https://i.imgur.com/DGZ8tEY.png','https://i.imgur.com/u8OSpaa.png','https://i.imgur.com/5brUFSs.png',
@@ -102,6 +101,14 @@
       'https://i.imgur.com/qTh2bwC.png'
     ];
 
+    const patterns = {
+      "A-B": [0, 1],
+      "A-B-B-A": [0, 1, 1, 0],
+      "A-B-C": [0, 1, 2],
+      "متماثل": "mirror",
+      "عشوائي": "random"
+    };
+
     const bracelet = document.getElementById("bracelet");
     const stonePanel = document.getElementById("stonePanel");
     const selectionBar = document.getElementById("selectionBar");
@@ -110,30 +117,38 @@
     const selectedSlots = [];
     const totalBraceletSlots = 24;
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 2; i++) {
       const selector = document.createElement("div");
       selector.className = "selection-slot";
       selector.dataset.index = i;
       selector.addEventListener("click", () => {
         if (currentStone) {
-          selector.style.backgroundImage = `url('${currentStone}')`;
-          selector.dataset.value = currentStone;
+          if (selector.dataset.value === currentStone) {
+            selector.style.backgroundImage = "";
+            selector.dataset.value = "";
+          } else {
+            selector.style.backgroundImage = `url('${currentStone}')`;
+            selector.dataset.value = currentStone;
+          }
         }
       });
       selectionBar.appendChild(selector);
       selectedSlots.push(selector);
     }
 
-    function generateBraceletFromSelection() {
+    function generatePatternedBracelet() {
       resetBracelet();
       const selectedStones = selectedSlots.map(s => s.dataset.value).filter(Boolean);
       if (selectedStones.length === 0) {
         alert("اختر حجرًا واحدًا على الأقل لتوليد السوار.");
         return;
       }
+
+      const basePattern = patterns["A-B"]; // استخدم نمط قابل للتغيير لاحقًا
       for (let i = 0; i < totalBraceletSlots; i++) {
-        const randomStone = selectedStones[Math.floor(Math.random() * selectedStones.length)];
-        braceletSlots[i].style.backgroundImage = `url('${randomStone}')`;
+        const patternIndex = basePattern[i % basePattern.length];
+        const stone = selectedStones[patternIndex % selectedStones.length];
+        braceletSlots[i].style.backgroundImage = `url('${stone}')`;
       }
     }
 
