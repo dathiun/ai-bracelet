@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
-      background: #f4f4f4;
+      #1e1e1e
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -43,7 +43,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: #ddd;
+      background: #e67e22; color: white;
       color: #444;
       border: none;
       cursor: pointer;
@@ -69,7 +69,7 @@
       margin-top: 10px;
     }
     .controls button {
-      background: #2ecc71;
+      background: #f1c40f;
       border: none;
       padding: 10px 15px;
       margin: 5px;
@@ -81,7 +81,7 @@
     .sidebar {
       width: 240px;
       background: #fff;
-      border-left: 2px solid #ccc;
+      border-left: 2px solid #f1c40f;
       padding: 20px 10px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -89,10 +89,14 @@
       height: auto;
       overflow-y: auto;
     }
-  </style>
+  
+body, button, .selection-slot, .slot {
+  color: #fff;
+}
+</style>
 </head>
-<body style="margin: 0; font-family: 'Arial', sans-serif; background: #f4f4f4; display: flex; flex-direction: row; justify-content: space-around; align-items: flex-start; height: 100vh; padding: 20px;">
-<div class="sidebar" id="syntheticPanel"><div style="font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 18px;">الأحجار غير الطبيعية</div></div><div class="main"><div style="background: #fff; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;"><div class="selection-bar">
+<body>
+<div class="main"><img src="28A25AB5-FB5A-49EE-A3E6-A3B0EC2B6859.png" style="width: 180px; margin-bottom: 15px;"/><div style="background: #fff; padding: 15px 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;"><div class="selection-bar">
 <button class="add-remove" onclick="removeSelectionSlot()">−</button>
 <div id="selectionBar" style="display: flex; gap: 10px;"></div>
 <button class="add-remove" onclick="addSelectionSlot()">+</button>
@@ -106,14 +110,18 @@
 </div>
 </div><div class="controls" style="margin-top: 20px;"><button onclick="resetBracelet()">إعادة التصميم</button></div>
 </div>
-<div style="font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 18px;">الأحجار الطبيعية</div><div class="sidebar" id="stonePanel"></div>
+<div class="sidebar" id="stonePanel"></div>
 <script>
-    const stoneNames = [
-      "Name1", "Name2", "Name3", "Name4", "Name5", "Name6",
-      "Name7", "Name8", "Name9", "Name10", "Name11", "Name12",
-      "Name13", "Name14", "Name15", "Name16", "Name17", "Name18",
-      "Name19", "Name20", "Name21", "Name22"
-    ];
+    
+const stoneNames = [
+  "حجر بركاني", "زجاج مطفي", "زجاج لامع", "حجر المغنيسيت",
+  "حجر صيني غامق", "حجر صيني فاتح", "عين النمر - أصفر",
+  "عين النمر - أزرق", "عين النمر - أخضر", "عين النمر - بنفسجي",
+  "حجر البيكاسو", "عقيق الأوركا", "حجر الجيمشيت", "حجر السربنتين",
+  "حجر الجاسبر", "عقيق عين التنين", "زجاج أحمر", "الأوبسيديان الأبيض",
+  "كوارتز سمائي", "كوارتز أحمر", "عقيق عرق التنين", "حجر السترين"
+];
+
 
     const stoneImages = [
       'https://i.imgur.com/doUTIAd.png','https://i.imgur.com/rjRfPu8.png','https://i.imgur.com/rK01MAV.png',
@@ -277,30 +285,6 @@
     // بدء بإنشاء خانتين افتراضياً
     createSelectionSlot();
     createSelectionSlot();
-  
-
-const syntheticStoneImages = [
-  'https://i.imgur.com/OTvQ2pJ.png', 'https://i.imgur.com/UvGZkxz.png', 'https://i.imgur.com/6AIvYrB.png'
-];
-
-syntheticStoneImages.forEach(stoneUrl => {
-  const stone = document.createElement('div');
-  stone.className = 'stone';
-  stone.style.width = '50px';
-  stone.style.height = '50px';
-  stone.style.borderRadius = '50%';
-  stone.style.backgroundSize = 'cover';
-  stone.style.backgroundPosition = 'center';
-  stone.style.border = '2px solid #fff';
-  stone.style.cursor = 'pointer';
-  stone.style.backgroundImage = `url('${stoneUrl}')`;
-  stone.addEventListener('click', () => {
-    currentStone = stoneUrl;
-    document.getElementById("previewStone").style.backgroundImage = `url('${stoneUrl}')`;
-    document.getElementById("previewName").innerText = "غير طبيعي";
-  });
-  document.getElementById("syntheticPanel").appendChild(stone);
-});
-</script>
+  </script>
 </body>
 </html>
