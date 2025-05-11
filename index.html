@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>DATHIUN AI Bracelet Generator</title>
-  <style>
+<meta charset="utf-8"/>
+<title>DATHIUN AI Bracelet Generator</title>
+<style>
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -91,22 +92,27 @@
   </style>
 </head>
 <body>
-  <div class="main">
-    <div class="selection-bar">
-      <button class="add-remove" onclick="removeSelectionSlot()">−</button>
-      <div id="selectionBar" style="display: flex; gap: 10px;"></div>
-      <button class="add-remove" onclick="addSelectionSlot()">+</button>
-    </div>
-    <div class="controls">
-      <button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
-      <button onclick="resetBracelet()">إعادة التصميم</button>
-    </div>
-    <div class="bracelet-container" id="bracelet"></div>
-  </div>
+<div class="main">
+<div class="selection-bar">
+<button class="add-remove" onclick="removeSelectionSlot()">−</button>
+<div id="selectionBar" style="display: flex; gap: 10px;"></div>
+<button class="add-remove" onclick="addSelectionSlot()">+</button>
+</div>
+<div class="controls">
+<button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
+<button onclick="resetBracelet()">إعادة التصميم</button>
+</div>
+<div class="bracelet-container" id="bracelet"></div>
+</div>
+<div id="stoneNameDisplay" style="margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333; text-align: center;"></div><div class="sidebar" id="stonePanel"></div>
+<script>
+    const stoneNames = [
+      "Name1", "Name2", "Name3", "Name4", "Name5", "Name6",
+      "Name7", "Name8", "Name9", "Name10", "Name11", "Name12",
+      "Name13", "Name14", "Name15", "Name16", "Name17", "Name18",
+      "Name19", "Name20", "Name21", "Name22"
+    ];
 
-  <div class="sidebar" id="stonePanel"></div>
-
-  <script>
     const stoneImages = [
       'https://i.imgur.com/doUTIAd.png','https://i.imgur.com/rjRfPu8.png','https://i.imgur.com/rK01MAV.png',
       'https://i.imgur.com/DGZ8tEY.png','https://i.imgur.com/u8OSpaa.png','https://i.imgur.com/5brUFSs.png',
@@ -244,7 +250,13 @@
       stone.style.border = '2px solid #fff';
       stone.style.cursor = 'pointer';
       stone.style.backgroundImage = `url('${stoneUrl}')`;
-      stone.addEventListener('click', () => currentStone = stoneUrl);
+      
+      stone.addEventListener('click', () => {
+        currentStone = stoneUrl;
+        const index = stoneImages.indexOf(stoneUrl);
+        document.getElementById("stoneNameDisplay").innerText = stoneNames[index] || "";
+      });
+
       stonePanel.appendChild(stone);
     });
 
