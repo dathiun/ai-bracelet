@@ -109,7 +109,7 @@
 </div>
 </div>
 </div>
-<div id="stoneNameDisplay" style="margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333; text-align: center;"></div><div class="sidebar" id="stonePanel"></div>
+<div class="sidebar" id="stonePanel"></div>
 <script>
     const stoneNames = [
       "Name1", "Name2", "Name3", "Name4", "Name5", "Name6",
@@ -259,7 +259,7 @@
       stone.addEventListener('click', () => {
         currentStone = stoneUrl;
         const index = stoneImages.indexOf(stoneUrl);
-        document.getElementById("stoneNameDisplay").innerText = stoneNames[index] || "";
+        
 
         const preview = document.getElementById("previewStone");
         const nameText = document.getElementById("previewName");
