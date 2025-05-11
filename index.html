@@ -102,7 +102,12 @@
 <button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
 <button onclick="resetBracelet()">إعادة التصميم</button>
 </div>
-<div class="bracelet-container" id="bracelet"></div>
+<div class="bracelet-container" id="bracelet">
+<div id="previewStoneWrapper" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center;">
+<div id="previewStone" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #666; background-size: cover; background-position: center; margin-bottom: 8px;"></div>
+<div id="previewName" style="font-size: 16px; color: #333; font-weight: bold;"></div>
+</div>
+</div>
 </div>
 <div id="stoneNameDisplay" style="margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333; text-align: center;"></div><div class="sidebar" id="stonePanel"></div>
 <script>
@@ -110,7 +115,7 @@
       "Name1", "Name2", "Name3", "Name4", "Name5", "Name6",
       "Name7", "Name8", "Name9", "Name10", "Name11", "Name12",
       "Name13", "Name14", "Name15", "Name16", "Name17", "Name18",
-      "Name19", "Name20", "Name21", "حجر السترين"
+      "Name19", "Name20", "Name21", "Name22"
     ];
 
     const stoneImages = [
@@ -255,6 +260,12 @@
         currentStone = stoneUrl;
         const index = stoneImages.indexOf(stoneUrl);
         document.getElementById("stoneNameDisplay").innerText = stoneNames[index] || "";
+
+        const preview = document.getElementById("previewStone");
+        const nameText = document.getElementById("previewName");
+        preview.style.backgroundImage = `url('${stoneUrl}')`;
+        nameText.innerText = stoneNames[index] || "";
+
       });
 
       stonePanel.appendChild(stone);
