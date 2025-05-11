@@ -86,7 +86,7 @@
         <select class="stone-dropdown"></select>
       </div>
       <button onclick="addStoneDropdown()">+ إضافة حجر آخر</button>
-      <button onclick="generateCustomBracelet()">ولّد التصميم الذكي</button>
+      <button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
     </div>
 
     <div class="bracelet-container" id="bracelet"></div>
@@ -99,29 +99,29 @@
 
   <script>
     const stones = [
-            'https://i.imgur.com/doUTIAd.png',
-            'https://i.imgur.com/rjRfPu8.png',
-            'https://i.imgur.com/rK01MAV.png',
-            'https://i.imgur.com/DGZ8tEY.png',
-            'https://i.imgur.com/u8OSpaa.png',
-            'https://i.imgur.com/5brUFSs.png',
-            'https://i.imgur.com/9fHyBAJ.png',
-            'https://i.imgur.com/MFlTbHw.png',
-            'https://i.imgur.com/zhX1hz6.png',
-            'https://i.imgur.com/6zFJUgn.png',
-            'https://i.imgur.com/hpALoFh.png',
-            'https://i.imgur.com/ZgGLKde.png',
-            'https://i.imgur.com/ixxO9XM.png',
-            'https://i.imgur.com/fUjLdCJ.png',
-            'https://i.imgur.com/b35xnRX.png',
-            'https://i.imgur.com/qyq8sbk.png',
-            'https://i.imgur.com/rPiW3j8.png',
-            'https://i.imgur.com/nfZW3le.png',
-            'https://i.imgur.com/mwG77GL.png',
-            'https://i.imgur.com/BN9Bg7q.png',
-            'https://i.imgur.com/vt7G56f.png',
-            'https://i.imgur.com/qTh2bwC.png'
-    ];
+  'https://i.imgur.com/doUTIAd.png',
+  'https://i.imgur.com/rjRfPu8.png',
+  'https://i.imgur.com/rK01MAV.png',
+  'https://i.imgur.com/DGZ8tEY.png',
+  'https://i.imgur.com/u8OSpaa.png',
+  'https://i.imgur.com/5brUFSs.png',
+  'https://i.imgur.com/9fHyBAJ.png',
+  'https://i.imgur.com/MFlTbHw.png',
+  'https://i.imgur.com/zhX1hz6.png',
+  'https://i.imgur.com/6zFJUgn.png',
+  'https://i.imgur.com/hpALoFh.png',
+  'https://i.imgur.com/ZgGLKde.png',
+  'https://i.imgur.com/ixxO9XM.png',
+  'https://i.imgur.com/fUjLdCJ.png',
+  'https://i.imgur.com/b35xnRX.png',
+  'https://i.imgur.com/qyq8sbk.png',
+  'https://i.imgur.com/rPiW3j8.png',
+  'https://i.imgur.com/nfZW3le.png',
+  'https://i.imgur.com/mwG77GL.png',
+  'https://i.imgur.com/BN9Bg7q.png',
+  'https://i.imgur.com/vt7G56f.png',
+  'https://i.imgur.com/qTh2bwC.png'
+];
 
     const bracelet = document.getElementById("bracelet");
     const stonePanel = document.getElementById("stonePanel");
@@ -153,13 +153,25 @@
       slots.forEach(slot => slot.style.backgroundImage = '');
     }
 
-    function generateCustomBracelet() {
+    function generatePatternedBracelet() {
       resetBracelet();
       const dropdowns = document.querySelectorAll('.stone-dropdown');
       const selected = Array.from(dropdowns).map(d => d.value);
+      if (selected.length < 2) {
+        alert("اختر حجرين على الأقل لتوليد النمط الذكي.");
+        return;
+      }
+      const A = selected[0];
+      const B = selected[1];
+
+      const pattern = [A, B, B, A];
       for (let i = 0; i < totalSlots; i++) {
-        const randomStone = selected[Math.floor(Math.random() * selected.length)];
-        slots[i].style.backgroundImage = `url('${randomStone}')`;
+        if (i < 4) {
+          slots[i].style.backgroundImage = `url('${pattern[i]}')`;
+        } else {
+          // نكمل باقي السوار بحجر A أو B (نختار A هنا للبساطة)
+          slots[i].style.backgroundImage = `url('${A}')`;
+        }
       }
     }
 
