@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+
+<html dir="rtl" lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>DATHIUN AI Bracelet Generator</title>
-  <style>
+<meta charset="utf-8"/>
+<title>DATHIUN AI Bracelet Generator</title>
+<style>
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
@@ -23,6 +24,7 @@
     }
     .selection-bar {
       display: flex;
+      align-items: center;
       gap: 10px;
       margin-bottom: 10px;
     }
@@ -33,6 +35,17 @@
       border: 2px dashed #aaa;
       background-size: cover;
       background-position: center;
+      cursor: pointer;
+    }
+    .add-remove {
+      font-size: 24px;
+      font-weight: bold;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      color: #444;
+      border: none;
       cursor: pointer;
     }
     .bracelet-container {
@@ -79,18 +92,32 @@
   </style>
 </head>
 <body>
-  <div class="main">
-    <div class="selection-bar" id="selectionBar"></div>
-    <div class="controls">
-      <button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
-      <button onclick="resetBracelet()">إعادة التصميم</button>
-    </div>
-    <div class="bracelet-container" id="bracelet"></div>
-  </div>
+<div class="main">
+<div class="selection-bar">
+<button class="add-remove" onclick="removeSelectionSlot()">−</button>
+<div id="selectionBar" style="display: flex; gap: 10px;"></div>
+<button class="add-remove" onclick="addSelectionSlot()">+</button>
+</div>
+<div class="controls">
+<button onclick="generatePatternedBracelet()">ولّد التصميم الذكي</button>
+<button onclick="resetBracelet()">إعادة التصميم</button>
+</div>
+<div class="bracelet-container" id="bracelet">
+<div id="previewStoneWrapper" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center;">
+<div id="previewStone" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #666; background-size: cover; background-position: center; margin-bottom: 8px;"></div>
+<div id="previewName" style="font-size: 16px; color: #333; font-weight: bold;"></div>
+</div>
+</div>
+</div>
+<div id="stoneNameDisplay" style="margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333; text-align: center;"></div><div class="sidebar" id="stonePanel"></div>
+<script>
+    const stoneNames = [
+      "Name1", "Name2", "Name3", "Name4", "Name5", "Name6",
+      "Name7", "Name8", "Name9", "Name10", "Name11", "Name12",
+      "Name13", "Name14", "Name15", "Name16", "Name17", "Name18",
+      "Name19", "Name20", "Name21", "Name22"
+    ];
 
-  <div class="sidebar" id="stonePanel"></div>
-
-  <script>
     const stoneImages = [
       'https://i.imgur.com/doUTIAd.png','https://i.imgur.com/rjRfPu8.png','https://i.imgur.com/rK01MAV.png',
       'https://i.imgur.com/DGZ8tEY.png','https://i.imgur.com/u8OSpaa.png','https://i.imgur.com/5brUFSs.png',
@@ -102,43 +129,46 @@
       'https://i.imgur.com/qTh2bwC.png'
     ];
 
-    const patternList = [
-      [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1],
-      [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0],
-      [0,0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
-      [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
-      [1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0],
-      [1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1],
-      [0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1],
-      [1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],
-      [0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0],
-      [1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1],
-      [0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0],
-      [1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1,0,1,0,0,1],
-      [1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0],
-      [0,0,1,1,1,0,0,1,1,1,0,0,1,1,1,0,0,1,1,1,0,0,1,1],
-      [1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0],
-      [0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1],
-      [1,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,0,1,0,0,1,1,0,1],
-      [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1],
-      [1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0]
-    ];
+    const allPatterns = {
+  2: [
+    [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1],
+    [1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0],
+    [0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1],
+    [1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,1],
+  ],
+  3: [
+    [0,1,2,0,1,2,0,1,2,0,1,2,0,1,2,0,1,2,0,1,2,0,1,2],
+    [0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1],
+    [0,0,1,1,2,2,0,0,1,1,2,2,0,0,1,1,2,2,0,0,1,1,2,2],
+    [2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0],
+    [0,1,1,2,2,0,0,1,1,2,2,0,0,1,1,2,2,0,0,1,1,2,2,0],
+  ],
+  4: [
+    [0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3],
+    [3,2,1,0,3,2,1,0,3,2,1,0,3,2,1,0,3,2,1,0,3,2,1,0],
+    [0,0,1,1,2,2,3,3,0,0,1,1,2,2,3,3,0,0,1,1,2,2,3,3],
+    [0,1,1,2,2,3,0,1,1,2,2,3,0,1,1,2,2,3,0,1,1,2,2,3],
+    [1,0,3,2,1,0,3,2,1,0,3,2,1,0,3,2,1,0,3,2,1,0,3,2],
+  ],
+};
 
     let currentPatternIndex = 0;
+    const maxSelections = 4;
+    const minSelections = 2;
 
     const bracelet = document.getElementById("bracelet");
     const stonePanel = document.getElementById("stonePanel");
     const selectionBar = document.getElementById("selectionBar");
     let currentStone = "";
     const braceletSlots = [];
-    const selectedSlots = [];
+    const selectionSlots = [];
     const totalBraceletSlots = 24;
 
-    for (let i = 0; i < 2; i++) {
+    function createSelectionSlot() {
       const selector = document.createElement("div");
       selector.className = "selection-slot";
-      selector.dataset.index = i;
+      selector.dataset.index = selectionSlots.length;
       selector.addEventListener("click", () => {
         if (currentStone) {
           if (selector.dataset.value === currentStone) {
@@ -151,20 +181,32 @@
         }
       });
       selectionBar.appendChild(selector);
-      selectedSlots.push(selector);
+      selectionSlots.push(selector);
+    }
+
+    function addSelectionSlot() {
+      if (selectionSlots.length < maxSelections) {
+        createSelectionSlot();
+      }
+    }
+
+    function removeSelectionSlot() {
+      if (selectionSlots.length > minSelections) {
+        const last = selectionSlots.pop();
+        selectionBar.removeChild(last);
+      }
     }
 
     function generatePatternedBracelet() {
       resetBracelet();
-      const selectedStones = selectedSlots.map(s => s.dataset.value).filter(Boolean);
-      if (selectedStones.length < 1) {
-        alert("اختر حجرًا واحدًا على الأقل.");
+      const selectedStones = selectionSlots.map(s => s.dataset.value).filter(Boolean);
+      if (selectedStones.length < minSelections) {
+        alert("اختر حجرين على الأقل.");
         return;
       }
-
-      const pattern = patternList[currentPatternIndex];
-      currentPatternIndex = (currentPatternIndex + 1) % patternList.length;
-
+      const patterns = allPatterns[selectedStones.length];
+      const pattern = patterns[currentPatternIndex % patterns.length];
+      currentPatternIndex++;
       for (let i = 0; i < totalBraceletSlots; i++) {
         const index = pattern[i % pattern.length] % selectedStones.length;
         braceletSlots[i].style.backgroundImage = `url('${selectedStones[index]}')`;
@@ -213,9 +255,25 @@
       stone.style.border = '2px solid #fff';
       stone.style.cursor = 'pointer';
       stone.style.backgroundImage = `url('${stoneUrl}')`;
-      stone.addEventListener('click', () => currentStone = stoneUrl);
+      
+      stone.addEventListener('click', () => {
+        currentStone = stoneUrl;
+        const index = stoneImages.indexOf(stoneUrl);
+        document.getElementById("stoneNameDisplay").innerText = stoneNames[index] || "";
+
+        const preview = document.getElementById("previewStone");
+        const nameText = document.getElementById("previewName");
+        preview.style.backgroundImage = `url('${stoneUrl}')`;
+        nameText.innerText = stoneNames[index] || "";
+
+      });
+
       stonePanel.appendChild(stone);
     });
+
+    // بدء بإنشاء خانتين افتراضياً
+    createSelectionSlot();
+    createSelectionSlot();
   </script>
 </body>
 </html>
